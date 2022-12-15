@@ -1,0 +1,966 @@
+---
+title: "campaign finance"
+author: "remy sorensen"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+```{r }
+library(tidyverse)
+library(ggplot2)
+library(DataExplorer)
+library(tidyverse)
+library(lubridate)
+library(colorspace)
+```
+
+
+
+```{r}
+#2020 donors by state
+
+CA_data <- data.frame(California = c(State_Donor_Total=1184582383, House_Total=177064633, Senate_Total=198947319, Pres_Total=191438455,	PAC_Total=473013762, Party_Total=77040874, Total_527=67077340))
+
+NY_data <- data.frame(NewYork = c(State_Donor_Total=654505644, House_Total=106283545, Senate_Total=96729357, Pres_Total=92257835,	PAC_Total=288022300, Party_Total=43426149, Total_527=27786458))
+
+TX_data <- data.frame(Texas	= c(State_Donor_Total=505431584, 	House_Total=98553277, Senate_Total=93450362, Pres_Total=58273294, 	PAC_Total=193475434, Party_Total=38695665, Total_527=22983552)) 
+
+FL_data <- data.frame(Florida = c(State_Donor_Total=399825186, House_Total=72198411, Senate_Total=72076565, Pres_Total=50748059, PAC_Total=151778296, Party_Total=335549583, Total_527=17474272)) 
+
+VA_data <- data.frame(Virginia = c(State_Donor_Total=346444371, House_Total=37228571, Senate_Total=56894484, Pres_Total=66332812, 	PAC_Total=155870792, Party_Total=14621957, Total_527=15495755)) 
+```
+
+
+```{r}
+MA_data <- data.frame(Massachusetts = c(State_Donor_Total=287103211, House_Total=336493783, Senate_Total=53618079, Pres_Total=43928513, PAC_Total=76402559, Party_Total=15289535, Total_527=61370742))
+
+IL_data <- data.frame(Illinois = c(State_Donor_Total=245890949, House_Total=41154462, Senate_Total=36905984, Pres_Total=33496079, PAC_Total=101624791, Party_Total=15418509, Total_527=17291124)) 
+```
+
+```{r}
+WA_data <- data.frame(Washington = c(State_Donor_Total=182235165, House_Total=27038289, Senate_Total=36095051, Pres_Total=42150043, PAC_Total=51603520, Party_Total=16713922, Total_527=8634340))
+
+PA_data <- data.frame(Pennsylvania = c(State_Donor_Total=179872874, House_Total=28249423, Senate_Total=326350387, Pres_Total=31076181, PAC_Total=71587849, Party_Total=13362129, Total_527=9246905))
+
+GA_data <- data.frame(Georgia	= c(State_Donor_Total=171989122, House_Total=23257467, Senate_Total=52686149, Pres_Total=317804539, PAC_Total=56877581, Party_Total=11581532, Total_527=9781854)) 
+
+MD_data <- data.frame(Maryland = c(State_Donor_Total=138320653, House_Total=21075240, Senate_Total=27640352, Pres_Total=26818450, PAC_Total=45112869, Party_Total=11145649, Total_527=6528093)) 
+```
+
+_data <- data.frame( = c(State_Donor_Total=, House_Total=, Senate_Total=, Pres_Total=,	PAC_Total=, Party_Total=, Total_527=))
+
+```{r}
+MI_data <- data.frame(Michigan = c(State_Donor_Total=134933612, House_Total=23148344, Senate_Total=33626118, Pres_Total=17505203, PAC_Total=39816994, Party_Total=15106017, Total_527=5730936)) 
+```
+
+```{r}
+NJ_data <- data.frame(NewJersey = c(State_Donor_Total=34176446, 
+                           House_Total=29032234, 
+                           Senate_Total=21514450, 
+                           Pres_Total=26433905,	
+                           PAC_Total=42148291, 
+                           Party_Total=8728694, 
+                           Total_527=6318872))
+
+CO_data <- data.frame(Colorado = c(State_Donor_Total=126278129, 
+                           House_Total=17613214, 
+                           Senate_Total=37092516, 
+                           Pres_Total=24012848,	
+                           PAC_Total=35089016, 
+                           Party_Total=8230309, 
+                           Total_527=4240226))
+
+```
+
+
+
+
+```{r}
+OH_data <- data.frame(Ohio = c(State_Donor_Total=124466184, 
+                           House_Total=18681390, 
+                           Senate_Total=19054436, 
+                           Pres_Total=17111332,	
+                           PAC_Total=45317804, 
+                           Party_Total=13329981, 
+                           Total_527=10971241))
+
+NC_data <- data.frame(NorthCarolina = c(State_Donor_Total=116413361, 
+                           House_Total=19631749, 
+                           Senate_Total=25227845, 
+                           Pres_Total=18982327,
+                           PAC_Total=30716530, 
+                           Party_Total=10559864, 
+                           Total_527=11295046))
+
+AZ_data <- data.frame(Arizona = c(State_Donor_Total=99393014, 
+                           House_Total=15600074, 
+                           Senate_Total=35566685, 
+                           Pres_Total=14977528,	
+                           PAC_Total=21509679, 
+                           Party_Total=8249942, 
+                           Total_527=3489106))
+
+
+CT_data<- data.frame(Connecticut = c(State_Donor_Total=96989613, 
+                           House_Total=11125971, 
+                           Senate_Total=17380720, 
+                           Pres_Total=14204573,	
+                           PAC_Total=38879760, 
+                           Party_Total=7699484, 
+                           Total_527=7699105))
+
+MN_data <- data.frame(Minnesota = c(State_Donor_Total=93176647, 
+                           House_Total=17185592, 
+                           Senate_Total=16082607, 
+                           Pres_Total=16350466,	
+                           PAC_Total=28899908, 
+                           Party_Total=7981349, 
+                           Total_527=6676725))
+
+TN_data <- data.frame(Tennessee = c(State_Donor_Total=92201769, 
+                           House_Total=12580044, 
+                           Senate_Total=22909167, 
+                           Pres_Total=1114834,	
+                           PAC_Total=27938244, 
+                           Party_Total=9710873, 
+                           Total_527=7915100))
+
+NV_data <- data.frame(Nevada = c(State_Donor_Total=89747751, 
+                           House_Total=9583638, 
+                           Senate_Total=9936602, 
+                           Pres_Total=7714253,	
+                           PAC_Total=45768222, 
+                           Party_Total=5335294, 
+                           Total_527=11409742))
+
+MO_data<- data.frame(Missouri = c(State_Donor_Total=78454209, 
+                           House_Total=12807144, 
+                           Senate_Total=12933900, 
+                           Pres_Total=9185795,	
+                           PAC_Total=23419869, 
+                           Party_Total=7251341, 
+                           Total_527=12856160))
+
+IN_data<- data.frame(Indiana = c(State_Donor_Total=68829914, 
+                           House_Total=10425093, 
+                           Senate_Total=10294201, 
+                           Pres_Total=9382112,	
+                           PAC_Total=28191129, 
+                           Party_Total=5178046, 
+                           Total_527=5359333))
+
+WI_data<- data.frame(Wisconsin = c(State_Donor_Total=64077237, 
+                           House_Total=12434894, 
+                           Senate_Total=9354142, 
+                           Pres_Total=9462439,	
+                           PAC_Total=19143554, 
+                           Party_Total=7394209, 
+                           Total_527=6287999))
+
+
+```
+
+
+
+```{r}
+
+OR_data <- data.frame(Oregon = c(State_Donor_Total=60988553, 
+                           House_Total=9359526, 
+                           Senate_Total=15745802, 
+                           Pres_Total=17173061,	
+                           PAC_Total=11538387, 
+                           Party_Total=6239658, 
+                           Total_527=932119))
+
+
+LA_data<- data.frame(Louisiana = c(State_Donor_Total=57297331, 
+                           House_Total=12254437, 
+                           Senate_Total=11065298, 
+                           Pres_Total=5397856,	
+                           PAC_Total=21505851, 
+                           Party_Total=3695258, 
+                           Total_527=3378631))
+
+AL_data<- data.frame(Alabama = c(State_Donor_Total=54073317, 
+                           House_Total=10497848, 
+                           Senate_Total=16495444, 
+                           Pres_Total=5089898,	
+                           PAC_Total=15943662, 
+                           Party_Total=5238865, 
+                           Total_527=807600))
+
+
+```
+
+```{r}
+
+SC_data<- data.frame(SouthCarolina = c(State_Donor_Total=50894265, 
+                           House_Total=11735187, 
+                           Senate_Total=15927595, 
+                           Pres_Total=7612454,	
+                           PAC_Total=10599809, 
+                           Party_Total=4248484, 
+                           Total_527=770736))
+
+
+OK_data<- data.frame(Oklahoma = c(State_Donor_Total=45900741, 
+                           House_Total=10127429, 
+                           Senate_Total=8993648, 
+                           Pres_Total=4996197,	
+                           PAC_Total=13799497, 
+                           Party_Total=4796090, 
+                           Total_527=3187880))
+
+
+```
+
+
+
+```{r}
+
+KY_data<- data.frame(Kentucky = c(State_Donor_Total=40895555, 
+                           House_Total=5192308, 
+                           Senate_Total=8823752, 
+                           Pres_Total=4631498,	
+                           PAC_Total=10891856, 
+                           Party_Total=8017582, 
+                           Total_527=3338559))
+
+
+IA_data<- data.frame(Iowa = c(State_Donor_Total=39668386, 
+                           House_Total=9469899, 
+                           Senate_Total=9061897, 
+                           Pres_Total=4912752,	
+                           PAC_Total=9319348, 
+                           Party_Total=4681317, 
+                           Total_527=2223173))
+
+KS_data<- data.frame(Kansas = c(State_Donor_Total=39582393, 
+                           House_Total=8324906, 
+                           Senate_Total=11579586, 
+                           Pres_Total=4070707,	
+                           PAC_Total=10345901, 
+                           Party_Total=3154749, 
+                           Total_527=2106544))
+
+NM_data <- data.frame(NewMexico = c(State_Donor_Total=35113356, 
+                           House_Total=9261391, 
+                           Senate_Total=9605079, 
+                           Pres_Total=6386308,	
+                           PAC_Total=5911455, 
+                           Party_Total=2938670, 
+                           Total_527=1010453))
+
+```
+<- data.frame( = c(State_Donor_Total=, 
+                           House_Total=, 
+                           Senate_Total=, 
+                           Pres_Total=,	
+                           PAC_Total=, 
+                           Party_Total=, 
+                           Total_527=))
+
+```{r}
+
+NM_data <- data.frame(NewMexico = c(State_Donor_Total=35113356, 
+                           House_Total=9261391, 
+                           Senate_Total=9605079, 
+                           Pres_Total=6386308,	
+                           PAC_Total=5911455, 
+                           Party_Total=2938670, 
+                           Total_527=1010453))
+
+
+AR_data <- data.frame(Arkansas = c(State_Donor_Total=31287895, 
+                           House_Total=5820860, 
+                           Senate_Total=5173979, 
+                           Pres_Total=3041153,	
+                           PAC_Total=10500803, 
+                           Party_Total=2864079, 
+                           Total_527=3887021))
+
+
+```
+
+
+```{r}
+ 
+
+UT_data <- data.frame(Utah = c(State_Donor_Total=28318572, 
+                           House_Total=6948969, 
+                           Senate_Total=5308229, 
+                           Pres_Total=4981458,	
+                           PAC_Total=7600668, 
+                           Party_Total=2549352, 
+                           Total_527=929896))
+                           
+
+
+NE_data<- data.frame(Nebraska = c(State_Donor_Total=28204165, 
+                           House_Total=5074626, 
+                           Senate_Total=3210223, 
+                           Pres_Total=2512052,	
+                           PAC_Total=12630766, 
+                           Party_Total=2740898, 
+                           Total_527=2035600))
+
+```
+<- data.frame( = c(State_Donor_Total=, 
+                           House_Total=, 
+                           Senate_Total=, 
+                           Pres_Total=,	
+                           PAC_Total=, 
+                           Party_Total=, 
+                           Total_527=))
+
+```{r}
+NH_data<- data.frame(NewHampshire = c(State_Donor_Total=23038927, 
+                           House_Total=3479998, 
+                           Senate_Total=6543110, 
+                           Pres_Total=5411941,	
+                           PAC_Total=4951825, 
+                           Party_Total=2214253, 
+                           Total_527=437800))
+
+
+MT_data <- data.frame(Montana = c(State_Donor_Total=21884379, 
+                           House_Total=4894800, 
+                           Senate_Total=7136224, 
+                           Pres_Total=2705228,	
+                           PAC_Total=4878927, 
+                           Party_Total=1885480, 
+                           Total_527=383720))
+ 
+```
+
+
+```{r}
+
+ME_data <- data.frame(Maine = c(State_Donor_Total=21478469, 
+                           House_Total=2978979, 
+                           Senate_Total=7452328, 
+                           Pres_Total=3815162,	
+                           PAC_Total=4769985, 
+                           Party_Total=2089043, 
+                           Total_527=372972))
+
+ID_data <- data.frame(Idaho = c(State_Donor_Total=19882393, 
+                           House_Total=2309530, 
+                           Senate_Total=4257777, 
+                           Pres_Total=3254479,	
+                           PAC_Total=7066606, 
+                           Party_Total=2463591, 
+                           Total_527=530410))
+
+
+MS_data <- data.frame(Mississippi = c(State_Donor_Total=19160624, 
+                           House_Total=2691419, 
+                           Senate_Total=5066757, 
+                           Pres_Total=1986252,	
+                           PAC_Total=5423992, 
+                           Party_Total=2968554, 
+                           Total_527=1023650))
+```
+
+
+
+```{r}
+
+WY_data <- data.frame(Wyoming = c(State_Donor_Total=18874037, 
+                           House_Total=2126563, 
+                           Senate_Total=4254590, 
+                           Pres_Total=1587996,	
+                           PAC_Total=8269598, 
+                           Party_Total=2364560, 
+                           Total_527=270730))
+
+DE_data<- data.frame(Delaware = c(State_Donor_Total=15852885, 
+                           House_Total=1421959, 
+                           Senate_Total=2816414, 
+                           Pres_Total=4413363,	
+                           PAC_Total=4852877, 
+                           Party_Total=1260067, 
+                           Total_527=1088205))
+
+RI_data<- data.frame(RhodeIsland = c(State_Donor_Total=14846880, 
+                           House_Total=1885133, 
+                           Senate_Total=3091682, 
+                           Pres_Total=2940259,	
+                           PAC_Total=5305106, 
+                           Party_Total=819643, 
+                           Total_527=805057))
+```
+
+```{r}
+
+
+AK_data<- data.frame(Alaska = c(State_Donor_Total=13598371, 
+                           House_Total=2726282, 
+                           Senate_Total=4799210, 
+                           Pres_Total=2218300,	
+                           PAC_Total=2063244, 
+                           Party_Total=1460360, 
+                           Total_527=330975))
+
+HI_data<- data.frame(Hawaii = c(State_Donor_Total=13161724, 
+                           House_Total=1855443, 
+                           Senate_Total=3782963, 
+                           Pres_Total=3291695,	
+                           PAC_Total=2783995, 
+                           Party_Total=1345368, 
+                           Total_527=102260))
+
+VT_data <- data.frame(Vermont = c(State_Donor_Total=10880599, 
+                           House_Total=969946, 
+                           Senate_Total=2705948, 
+                           Pres_Total=3342556,	
+                           PAC_Total=2010376, 
+                           Party_Total=1298364, 
+                           Total_527=553409))
+
+```
+
+```{r}
+
+SD_data <- data.frame(SouthDakota = c(State_Donor_Total=10121447, 
+                           House_Total=1654348, 
+                           Senate_Total=2550010, 
+                           Pres_Total=1204313,	
+                           PAC_Total=3107459, 
+                           Party_Total=1057942, 
+                           Total_527=547375))
+
+WV_data<- data.frame(WestVirginia = c(State_Donor_Total=9788086, 
+                           House_Total=1538075, 
+                           Senate_Total=2210540, 
+                           Pres_Total=1555705,	
+                           PAC_Total=3051180, 
+                           Party_Total=1291486, 
+                           Total_527=141100))
+
+
+ND_data <- data.frame(NorthDakota = c(State_Donor_Total=9306925, 
+                           House_Total=835458, 
+                           Senate_Total=1344059, 
+                           Pres_Total=90633,	
+                           PAC_Total=4732878, 
+                           Party_Total=1205203, 
+                           Total_527=282995))
+```
+
+```{r}
+
+```
+
+```{r}
+df_50 <- data.frame(AL_data, AK_data, AR_data, AZ_data, CA_data, CO_data, CT_data, DE_data, FL_data, GA_data, HI_data, ID_data, IL_data, IN_data, IA_data, KS_data, KY_data,LA_data, MA_data, MD_data, ME_data, MI_data, MN_data, MO_data, MS_data, MT_data, NC_data, ND_data, NE_data, NH_data, NJ_data, NM_data, NV_data, NY_data, OH_data, OK_data, OR_data, PA_data, RI_data, SC_data, SD_data, TN_data, TX_data, UT_data, VA_data, VT_data, WA_data, WI_data, WV_data, WY_data)
+head(df_50)
+```
+
+```{r}
+df_all_states <- as.data.frame(t(df_50))
+df_all_states
+```
+
+```{r}
+summary(df_all_states)
+```
+
+```{r}
+colnames(df_all_states)[7] <- "Total_527"
+df_all_states
+```
+
+```{r}
+regions = c(
+"Alabama",
+"Alaska",
+"Arizona",
+"Arkansas",
+'California',
+'Colorado',
+'Connecticut',
+'Delaware',
+'Florida',
+'Georgia',
+'Hawaii',
+"Idaho",
+"Illinois",
+'Indiana',
+"Iowa",
+"Kansas",
+'Kentucky',
+"Louisiana",
+'Maine',
+'Maryland',
+"Massachusetts",
+"Michigan",
+"Minnesota",
+"Mississippi",
+'Missouri',
+'Montana',
+'Nebraska',
+"Nevada",
+'New Hampshire',
+'New Jersey',
+'New Mexico',
+'New York',
+"North Carolina",
+"North Dakota",
+"Ohio",
+'Oklahoma',
+"Oregon",
+'Pennsylvania',
+'Rhode Island',
+"South Carolina",
+'South Dakota',
+"Tennessee",
+'Texas',
+'Utah',
+'Vermont',
+'Virginia',
+'Washington',
+'West Virginia',
+'Wisconsin',
+"Wyoming")
+
+region <- tolower(regions)
+```
+
+
+```{r}
+abbr = c(
+"AL",
+"AK",
+'AZ',
+'AR',
+'CA',
+'CO',
+'CT',
+'DE',
+'FL',
+"GA",
+'HI',
+"ID",
+"IL",
+"IN",
+'IA',
+'KS',
+'KY',
+'LA',
+'ME',
+'MD',
+"MA",
+'MI',
+'MN',
+"MS",
+"MO",
+"MT",
+"NE",
+"NV",
+"NH",
+"NJ",
+"NM",
+"NY",
+'NC',
+'ND',
+'OH',
+'OK',
+'OR',
+'PA',
+'RI',
+"SC",
+'SD',
+"TN",
+"TX",
+'UT',
+"VT",
+'VA',
+"WA",
+'WV',
+"WI",
+"WY")
+```
+
+```{r}
+df1 <- cbind(df_all_states, region, abbr, election, state_pop_2020, party_id) 
+df1
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(df_all_states, aes(x=abbr, y=State_Donor_Total)) +
+  geom_boxplot(fill="steelblue", color="black") +
+  ggtitle("Boxplot of the Donor Total")
+```
+
+```{r}
+ggplot(df, aes(x=abbr, y=PAC_Total))+
+  geom_col()
+
+```
+
+```{r}
+ggplot(df, aes(y=abbr, x=Senate_Total))+
+  geom_col()
+```
+
+```{r}
+#install.packages("usmap")
+library(usmap)
+library(ggplot2)
+plot_usmap(regions = "states")+
+  labs(title = "U.S. States")+
+  theme(panel.background = element_blank())
+```
+
+
+```{r}
+#based on senate map 2022 and electoral map 2020
+party_id = c(
+AL=1,
+AK=1,
+AZ=0,
+AR=1,
+CA=0,
+CO=0,
+CT=0,
+DE=0,
+FL=1,
+GA=1,
+HI=0,
+ID=1,
+IL=0,
+IN=1,
+IA=1,
+KS=1,
+KY=1,
+LA=1,
+ME=0,
+MD=0,
+MA=0,
+MI=0,
+MN=0,
+MS=1,
+MO=1,
+MT=1,
+NE=1,
+NV=0,
+NH=0,
+NJ=0,
+NM=1,
+NY=0,
+NC=1,
+ND=1,
+OH=1,
+OK=1,
+OR=0,
+PA=1,
+RI=0,
+SC=1,
+SD=1,
+TN=1,
+TX=1,
+UT=1,
+VT=0,
+VA=0,
+WA=0,
+WV=1,
+WI=1,
+WY=1
+)
+
+
+```
+```{r}
+party = c(Republican = 1, Democrat =1)
+
+
+election <- c("alabama"=Republican,
+             "alaska"=Republican,
+             "arizona"=Democrat,       "arkansas"=Republican,"california"=Democrat,"colorado"=Democrat,"connecticut"=Democrat,"delaware"=Democrat,"florida"=Republican,"georgia"=Republican,"hawaii"=Democrat,    "idaho"=Republican,"illinois"=Democrat,"indiana"=Republican,"iowa"=Republican,"kansas"=Republican, "kentucky"=Republican,"louisiana"=Republican,"maine"=Democrat,         "maryland"=Democrat,"massachusetts"=Democrat,"michigan"=Democrat,"minnesota"=Democrat,"mississippi"=Republican,"missouri"=Republican,"montana"=Republican,"nebraska"=Republican,"nevada"=Democrat,"new hampshire"=Democrat,"new jersey"=Democrat,"new mexico"=Republican,"new york"=Democrat,"north carolina"=Republican,"north dakota"=Republican,"ohio"=Republican,"oklahoma"=Republican,"oregon"=Democrat,"pennsylvania"=Republican,"rhode island"=Democrat,"south carolina"=Republican,"south dakota"=Democrat,"tennessee"=Republican,"texas"=Republican,"utah"=Republican,
+"vermont"=Republican,"virginia"=Republican,"washington"=Democrat,"west virginia"=Republican, "wisconsin"=Republican, "wyoming"=Republican
+)
+```
+
+
+library(usmap)
+library(ggplot2)
+
+dfmaps <- data.frame(
+  states=c("AL",
+"AK",
+'AZ',
+'AR',
+'CA',
+'CO',
+'CT',
+'DE',
+'FL',
+"GA",
+'HI',
+"ID",
+"IL",
+"IN",
+'IA',
+'KS',
+'KY',
+'LA',
+'ME',
+'MD',
+"MA",
+'MI',
+'MN',
+"MS",
+"MO",
+"MT",
+"NE",
+"NV",
+"NH",
+"NJ",
+"NM",
+"NY",
+'NC',
+'ND',
+'OH',
+'OK',
+'OR',
+'PA',
+'RI',
+"SC",
+'SD',
+"TN",
+"TX",
+'UT',
+"VT",
+'VA',
+"WA",
+'WV',
+"WI",
+"WY"),
+values = c(1,1,0,1,0,0,0,0,1,1,0,1,0,1,1,1,1,1,0,0,0,0,0,1,1,1,1,0,0,0,1,0,1,1,1,1,0,1,0,1,1,1,1,1,0,0,0,1,1,1))
+plot_usmap(data = df, values=values)
+ 
+ 
+  
+
+
+```{r}
+plot_usmap(regions = "states") + 
+  labs(title = "U.S. States",
+       subtitle = "This is a blank map of the United States.") + 
+  theme(panel.background=element_blank())
+```
+
+```{r}
+library(readxl)
+t_elec_19 <- read_excel("~/Desktop/Final Paper:Project/t_elec_19.xls")
+View(t_elec_19)
+```
+
+```{r}
+df_election19 <- data.frame(t_elec_19)
+
+dim(df_election19)
+```
+
+```{r}
+#library(DataExplorer)
+
+#create_report(df2)
+```
+
+
+```{r}
+df_full <- merge(df, df_election19)
+
+#df_full
+```
+
+```{r}
+library(DataExplorer)
+```
+
+```{r}
+library(ggplot2)
+library(maps)
+
+party_colors <- c("#2E74C0", "#CB454A") 
+
+ggplot(election_df, aes(x = party_id, y = State_Donor_Total)) + 
+  geom_point(aes(size = .5, color = "blue")) + 
+  geom_smooth(method = 'lm',formula = y ~ x)  # Add regression line
+
+```
+
+
+```{r}
+library(usdata)
+
+data.frame(state_stats)
+
+```
+
+
+```{r}
+state_pop_2020 = c(
+AL=5024279,
+AK=733391,
+AZ=7151502,
+AR=3011524,
+CA=39538223,
+CO=5773714,
+CT=3605944,
+DE=989948,
+FL=21538187,
+GA=10711908,
+HI=1455271,
+ID=1839106,
+IL=12801989,
+IN=6785528,
+IA=3271616,
+KS=2937880,
+KY=4505836,
+LA=4657757,
+ME=1362359,
+MD=6177224,
+MA=7029917,
+MI=10077331,
+MN=5706494,
+MS=2961279,
+MO=6154913,
+MT=1084225,
+NE=1961504,
+NV=3104614,
+NH=1377529,
+NJ=9288994,
+NM=2117522,
+NY=20201249,
+NC=10439388,
+ND=779094,
+OH=11799448,
+OK=3959353,
+OR=4237256,
+PA=13002700,
+RI=1097379,
+SC=5118425,
+SD=886667,
+TN=6910840,
+TX=29145505,
+UT=3205958,
+VT=643077,
+VA=8631393,
+WA=7705281,
+WV=1793716,
+WI=5893718,
+WY=576851
+)
+```
+
+```{r}
+ggplot(election_df, aes(x = party_id, y = PAC_Total)) + 
+  geom_point(aes(size = .5, color = "blue")) + 
+  geom_smooth(method = 'lm',formula = y ~ x)  # Add regression line
+
+
+```
+```{r }
+summary.data.frame(df)
+```
+
+```{r}
+ggplot(df, 
+       aes(x = abbr, 
+           fill = State_Donor_Total)) + 
+  geom_bar(position = "stack")
+```
+
+```{r}
+ggplot(df, aes(x = state_pop_2020)) +
+  geom_histogram() + 
+  labs(title = "State Donor Total by Population",
+       x = "state_pop_2020")
+```
+
+```{r}
+library(GGally)
+plot(df1)
+```
+
+```{r}
+library(maps)
+library(ggthemes)
+library(cowplot)
+
+
+party_colors <- c("#2E74C0", "#CB454A") 
+ggplot(data = df2,
+             mapping = aes(x = long, y = lat,
+                          group = group, fill = party_id))+ 
+  geom_polygon(color = "gray90", size = 0.1)+
+  coord_map(projection = "albers", lat0 = 39, lat1 = 45)+ 
+  scale_fill_manual(values = party_colors)+
+  labs(title = "State Party ID", fill = NULL)+ 
+  theme_map()
+```
+
+
+```{r}
+summary(df)
+ 
+```
+
+
+
+
+```{r}
+library(dplyr)
+library(plyr)
+library(maps)
+```
+
+
+```{r}
+election_df <- merge(us_states, df1, sort=FALSE)
+election_df
+```
+
+
+```{r}
+p <- ggplot(data = us_states,
+            mapping = aes(x = long, y = lat,
+                          group = group))
+
+p + geom_polygon(fill = "white", color = "black")
+```
+
+
+```{r}
+str(election_df)
+
+```
+
+```{r}
+lm(formula = formula(df), data = df)
+
+```
+
+
+```{r}
+library(dlookr)
+eda_web_report(df) 
+```
+
+```{r}
+library(tikzDevice)
+
+```
+
